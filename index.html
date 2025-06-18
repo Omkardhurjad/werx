@@ -289,7 +289,7 @@
             {
                 name: "The AIvengers",
                 captain: "Team Captain Name",
-                videoLink: "videoLink: '<iframe src="https://drive.google.com/file/d/1hbfrXdQVdQsMJzSeTi8NNQCpQ0VRQY5f/preview" width="640" height="480" allow="autoplay"></iframe>',
+                videoLink: "https://drive.google.com/your-video-link",
                 slidedeckLink: "https://docs.google.com/presentation/your-slides",
                 problemSolution: "We tackled the issue of data silos in enterprise environments by creating an intelligent data integration platform that uses ML to automatically map and synchronize data across different systems.",
                 architectureLink: "https://your-architecture-diagram-link.com",
@@ -405,31 +405,19 @@
             document.getElementById('modalTeamName').textContent = team.name;
             document.getElementById('modalCaptain').textContent = `Team Captain: ${team.captain}`;
             
-            // Embed Google Drive video if it's a preview link
-            if (team.videoLink.includes('drive.google.com') && team.videoLink.includes('/preview')) {
-                document.getElementById('videoPlaceholder').innerHTML = `
-                    <iframe width="100%" height="300" src="${team.videoLink}" frameborder="0" allowfullscreen></iframe>
-                `;
-            } else if (team.videoLink.includes('drive.google.com')) {
-                // Convert view link to preview link
-                const fileId = team.videoLink.match(/\/d\/([a-zA-Z0-9-_]+)/);
-                if (fileId) {
-                    const embedUrl = `https://drive.google.com/file/d/${fileId[1]}/preview`;
-                    document.getElementById('videoPlaceholder').innerHTML = `
-                        <iframe width="100%" height="300" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
-                    `;
-                } else {
-                    document.getElementById('videoPlaceholder').innerHTML = `
-                        🎥 ${team.name} Demo Video<br>
-                        <small>Click <a href="${team.videoLink}" target="_blank" style="color: white; text-decoration: underline;">here</a> to watch the demo</small>
-                    `;
-                }
-            } else {
-                document.getElementById('videoPlaceholder').innerHTML = `
-                    🎥 ${team.name} Demo Video<br>
-                    <small>Click <a href="${team.videoLink}" target="_blank" style="color: white; text-decoration: underline;">here</a> to watch the demo</small>
-                `;
-            }
+            // Handle video display - Google Drive often blocks embedding, so we'll show a clean video access section
+            document.getElementById('videoPlaceholder').innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: center; height: 300px; flex-direction: column; color: white; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🎥</div>
+                    <div style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">${team.name} Demo Video</div>
+                    <div style="margin-bottom: 1.5rem; opacity: 0.9;">Click below to watch the demo</div>
+                    <a href="${team.videoLink}" target="_blank" style="background: rgba(255,255,255,0.2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 500; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.3);" 
+                       onmouseover="this.style.background='rgba(255,255,255,0.3)'; this.style.transform='translateY(-2px)'"
+                       onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.transform='translateY(0)'">
+                        ▶️ Watch Demo Video
+                    </a>
+                </div>
+            `;
             
             // Populate team information
             const teamInfo = document.getElementById('teamInfo');
