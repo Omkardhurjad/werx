@@ -289,7 +289,7 @@
             {
                 name: "The AIvengers",
                 captain: "Team Captain Name",
-                videoLink: "videoLink: "https://drive.google.com/file/d/1hbfrXdQVdQsMJzSeTi8NNQCpQ0VRQY5f/preview"",
+                videoLink: "https://drive.google.com/your-video-link",
                 slidedeckLink: "https://docs.google.com/presentation/your-slides",
                 problemSolution: "We tackled the issue of data silos in enterprise environments by creating an intelligent data integration platform that uses ML to automatically map and synchronize data across different systems.",
                 architectureLink: "https://your-architecture-diagram-link.com",
@@ -405,11 +405,31 @@
             document.getElementById('modalTeamName').textContent = team.name;
             document.getElementById('modalCaptain').textContent = `Team Captain: ${team.captain}`;
             
-            // Update video placeholder (you can replace this with actual video embedding)
-            document.getElementById('videoPlaceholder').innerHTML = `
-                🎥 ${team.name} Demo Video<br>
-                <small>Click <a href="${team.videoLink}" target="_blank" style="color: white; text-decoration: underline;">here</a> to watch the demo</small>
-            `;
+            // Embed Google Drive video if it's a preview link
+            if (team.videoLink.includes('drive.google.com') && team.videoLink.includes('/preview')) {
+                document.getElementById('videoPlaceholder').innerHTML = `
+                    <iframe width="100%" height="300" src="${team.videoLink}" frameborder="0" allowfullscreen></iframe>
+                `;
+            } else if (team.videoLink.includes('drive.google.com')) {
+                // Convert view link to preview link
+                const fileId = team.videoLink.match(/\/d\/([a-zA-Z0-9-_]+)/);
+                if (fileId) {
+                    const embedUrl = `https://drive.google.com/file/d/${fileId[1]}/preview`;
+                    document.getElementById('videoPlaceholder').innerHTML = `
+                        <iframe width="100%" height="300" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
+                    `;
+                } else {
+                    document.getElementById('videoPlaceholder').innerHTML = `
+                        🎥 ${team.name} Demo Video<br>
+                        <small>Click <a href="${team.videoLink}" target="_blank" style="color: white; text-decoration: underline;">here</a> to watch the demo</small>
+                    `;
+                }
+            } else {
+                document.getElementById('videoPlaceholder').innerHTML = `
+                    🎥 ${team.name} Demo Video<br>
+                    <small>Click <a href="${team.videoLink}" target="_blank" style="color: white; text-decoration: underline;">here</a> to watch the demo</small>
+                `;
+            }
             
             // Populate team information
             const teamInfo = document.getElementById('teamInfo');
