@@ -3,334 +3,471 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hackathon Showcase</title>
+    <title>Hackathon 2025 - Team Showcase</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             color: #333;
         }
 
-        h1 {
-            text-align: center;
-            color: #0056b3;
-            margin-bottom: 40px;
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
         }
 
-        .team-grid {
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .teams-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
         }
 
         .team-card {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
             cursor: pointer;
-            transition: transform 0.2s ease-in-out;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 150px; /* Ensure cards have a minimum height */
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
         .team-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 1);
         }
 
-        .team-card h2 {
-            margin-top: 0;
-            color: #007bff;
+        .team-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
         }
 
-        /* Modal Styles */
+        .team-captain {
+            color: #718096;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .view-details {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .view-details:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
         .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
+            display: none;
+            position: fixed;
+            z-index: 1000;
             left: 0;
             top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
-            padding-top: 60px;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
         }
 
         .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto; /* 5% from the top and centered */
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%; /* Could be more or less, depending on screen size */
-            max-width: 900px; /* Max width for content */
-            border-radius: 8px;
+            background: white;
+            margin: 2% auto;
+            padding: 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow-y: auto;
             position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
-        .close-button {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
+        .close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            font-size: 2rem;
             font-weight: bold;
+            cursor: pointer;
+            color: #718096;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
         }
 
-        .close-button:hover,
-        .close-button:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
+        .close:hover {
+            background: #f7fafc;
+            color: #2d3748;
+        }
+
+        .modal-header {
+            margin-bottom: 2rem;
+            padding-right: 3rem;
+        }
+
+        .modal-team-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-captain {
+            color: #718096;
+            font-size: 1.1rem;
         }
 
         .video-container {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
-            height: 0;
-            overflow: hidden;
-            margin-bottom: 20px;
-            background-color: #000; /* Black background for video placeholder */
-        }
-
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
-            height: 100%;
-            border: 0;
+            margin-bottom: 2rem;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
-        .modal-info p {
-            margin-bottom: 10px;
+        .video-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
         }
 
-        .modal-info a {
-            color: #007bff;
+        .team-info {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .info-section {
+            background: #f7fafc;
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-title {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .info-content {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .info-link {
+            color: #667eea;
             text-decoration: none;
+            font-weight: 500;
         }
 
-        .modal-info a:hover {
+        .info-link:hover {
             text-decoration: underline;
         }
 
-        /* Responsive adjustments */
         @media (max-width: 768px) {
-            .team-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            .container {
+                padding: 1rem;
             }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .teams-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .team-card {
+                padding: 1.5rem;
+            }
+            
             .modal-content {
                 width: 95%;
-                margin: 2% auto;
+                margin: 5% auto;
+                padding: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <div class="header">
+            <h1>Hackathon 2025</h1>
+            <p>Team Showcase - 11 Amazing Projects</p>
+        </div>
 
-    <h1>Hackathon Team Showcase</h1>
-
-    <div class="team-grid">
-        <div class="team-card" data-team="agentx">
-            <h2>AgentX</h2>
-        </div>
-        <div class="team-card" data-team="theaivengers">
-            <h2>The AIvengers</h2>
-        </div>
-        <div class="team-card" data-team="ctrlaltelite">
-            <h2>Ctrl+Alt+Elite</h2>
-        </div>
-        <div class="team-card" data-team="insighthackers">
-            <h2>InsightHackers</h2>
-        </div>
-        <div class="team-card" data-team="aiwizards">
-            <h2>AI Wizards</h2>
-        </div>
-        <div class="team-card" data-team="llmaosquad">
-            <h2>LLMao Squad</h2>
-        </div>
-        <div class="team-card" data-team="cloudwerxagents">
-            <h2>Cloudwerx Agents</h2>
-        </div>
-        <div class="team-card" data-team="risingcyberbrains">
-            <h2>Rising Cyber Brains (RCB)</h2>
-        </div>
-        <div class="team-card" data-team="binarybrains">
-            <h2>Binary Brains</h2>
-        </div>
-        <div class="team-card" data-team="promptops">
-            <h2>PromptOps</h2>
-        </div>
-        <div class="team-card" data-team="theagentictroup">
-            <h2>The Agentic Troup</h2>
+        <div class="teams-grid" id="teamsGrid">
+            <!-- Team cards will be generated by JavaScript -->
         </div>
     </div>
 
+    <!-- Modal -->
     <div id="teamModal" class="modal">
         <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2 id="modalTeamName"></h2>
-            <div class="video-container">
-                <iframe id="modalVideo" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <div class="modal-team-name" id="modalTeamName"></div>
+                <div class="modal-captain" id="modalCaptain"></div>
             </div>
-            <div class="modal-info">
-                <p><strong>Slide Deck:</strong> <a id="modalSlideDeck" href="#" target="_blank">View Slide Deck</a></p>
-                <p><strong>Problem-Solution Fit:</strong> <span id="modalProblemSolution"></span></p>
-                <p><strong>Architecture Diagram:</strong> <a id="modalArchitectureDiagram" href="#" target="_blank">View Architecture Diagram</a></p>
-                <p><strong>Impact Metrics / ROI Estimate:</strong> <span id="modalImpactMetrics"></span></p>
+            
+            <div class="video-container">
+                <div class="video-placeholder" id="videoPlaceholder">
+                    🎥 Demo Video<br>
+                    <small>Video will be embedded here</small>
+                </div>
+            </div>
+            
+            <div class="team-info" id="teamInfo">
+                <!-- Team information will be populated by JavaScript -->
             </div>
         </div>
     </div>
 
     <script>
-        // Data for each team - YOU NEED TO FILL THIS IN
-        const teamsData = {
-            agentx: {
+        // Team data structure
+        const teams = [
+            {
                 name: "AgentX",
-                videoLink: "YOUR_AGENTX_VIDEO_EMBED_URL", // Example: "https://www.youtube.com/embed/dQw4w9WgXcQ" or Google Drive embed link
-                slideDeckLink: "YOUR_AGENTX_SLIDE_DECK_LINK",
-                problemSolutionFit: "AgentX developed a solution for optimizing supply chain logistics using predictive AI to minimize delays and reduce costs.",
-                architectureDiagramLink: "YOUR_AGENTX_ARCH_DIAGRAM_LINK",
-                impactMetrics: "Reduced delivery times by 15%, saved $50k annually in operational costs."
+                captain: "Team Captain Name",
+                videoLink: "https://drive.google.com/your-video-link",
+                slidedeckLink: "https://docs.google.com/presentation/your-slides",
+                problemSolution: "Our team identified the challenge of automated customer service responses and developed an AI-powered agent that can handle complex queries with 95% accuracy, reducing response time from hours to seconds.",
+                architectureLink: "https://your-architecture-diagram-link.com",
+                impactMetrics: "Expected 40% reduction in customer service costs, 60% improvement in response time, and potential ROI of 300% within first year of implementation."
             },
-            theaivengers: {
+            {
                 name: "The AIvengers",
-                videoLink: "YOUR_AIVENGERS_VIDEO_EMBED_URL",
-                slideDeckLink: "YOUR_AIVENGERS_SLIDE_DECK_LINK",
-                problemSolutionFit: "The AIvengers created an AI-powered personal assistant for healthcare professionals, streamlining patient data entry.",
-                architectureDiagramLink: "YOUR_AIVENGERS_ARCH_DIAGRAM_LINK",
-                impactMetrics: "Improved data entry efficiency by 25%, reduced administrative burden by 10 hours/week per professional."
+                captain: "Team Captain Name",
+                videoLink: "https://drive.google.com/your-video-link",
+                slidedeckLink: "https://docs.google.com/presentation/your-slides",
+                problemSolution: "We tackled the issue of data silos in enterprise environments by creating an intelligent data integration platform that uses ML to automatically map and synchronize data across different systems.",
+                architectureLink: "https://your-architecture-diagram-link.com",
+                impactMetrics: "Projected 50% reduction in data processing time, 25% increase in data accuracy, and estimated annual savings of $2M for large enterprises."
             },
-            ctrlaltelite: {
+            {
                 name: "Ctrl+Alt+Elite",
-                videoLink: "YOUR_CTRLALTELITE_VIDEO_EMBED_URL",
-                slideDeckLink: "YOUR_CTRLALTELITE_SLIDE_DECK_LINK",
-                problemSolutionFit: "Ctrl+Alt+Elite built a cybersecurity threat detection system using machine learning to identify anomalous network behavior.",
-                architectureDiagramLink: "YOUR_CTRLALTELITE_ARCH_DIAGRAM_LINK",
-                impactMetrics: "Detected 95% of simulated cyber threats, reduced false positives by 30%."
+                captain: "Team Captain Name",
+                videoLink: "https://drive.google.com/your-video-link",
+                slidedeckLink: "https://docs.google.com/presentation/your-slides",
+                problemSolution: "Our solution addresses the growing cybersecurity threats by implementing an AI-driven threat detection system that learns from network behavior patterns to identify anomalies in real-time.",
+                architectureLink: "https://your-architecture-diagram-link.com",
+                impactMetrics: "99.2% threat detection accuracy, 80% reduction in false positives, potential prevention of security breaches worth millions in damages."
             },
-            insighthackers: {
+            {
                 name: "InsightHackers",
-                videoLink: "YOUR_INSIGHTHACKERS_VIDEO_EMBED_URL",
-                slideDeckLink: "YOUR_INSIGHTHACKERS_SLIDE_DECK_LINK",
-                problemSolutionFit: "InsightHackers developed a data visualization tool that turns complex datasets into interactive dashboards for business intelligence.",
-                architectureDiagramLink: "YOUR_INSIGHTHACKERS_ARCH_DIAGRAM_LINK",
-                impactMetrics: "Increased report generation speed by 40%, improved decision-making accuracy by 20%."
+                captain: "Team Captain Name",
+                videoLink: "https://drive.google.com/your-video-link",
+                slidedeckLink: "https://docs.google.com/presentation/your-slides",
+                problemSolution: "We developed an advanced analytics platform that transforms raw business data into actionable insights using natural language processing and predictive modeling.",
+                architectureLink: "https://your-architecture-diagram-link.com",
+                impactMetrics: "35% improvement in decision-making speed, 28% increase in revenue prediction accuracy, and 200% ROI within 18 months."
             },
-            aiwizards: {
+            {
                 name: "AI Wizards",
-                videoLink: "YOUR_AIWIZARDS_VIDEO_EMBED_URL",
-                slideDeckLink: "YOUR_AIWIZARDS_SLIDE_DECK_LINK",
-                problemSolutionFit: "AI Wizards created a natural language processing (NLP) model to summarize legal documents efficiently.",
-                architectureDiagramLink: "YOUR_AIWIZARDS_ARCH_DIAGRAM_LINK",
-                impactMetrics: "Reduced document review time by 50%, improved summary accuracy by 15%."
+                captain: "Team Captain Name",
+                videoLink: "https://drive.google.com/your-video-link",
+                slidedeckLink: "https://docs.google.com/presentation/your-slides",
+                problemSolution: "Our team created an intelligent code review system that uses machine learning to automatically detect bugs, security vulnerabilities, and suggest optimizations in real-time.",
+                architectureLink: "https://your-architecture-diagram-link.com",
+                impactMetrics: "70% reduction in code review time, 45% decrease in production bugs, estimated $500K annual savings in development costs."
             },
-            llmaosquad: {
+            {
                 name: "LLMao Squad",
-                videoLink: "YOUR_LLMAOSQUAD_VIDEO_EMBED_URL",
-                slideDeckLink: "YOUR_LLMAOSQUAD_SLIDE_DECK_LINK",
-                problemSolutionFit: "LLMao Squad implemented an LLM-based customer support chatbot capable of handling complex queries with high accuracy.",
-                architectureDiagramLink: "YOUR_LLMAOSQUAD_ARCH_DIAGRAM_LINK",
-                impactMetrics: "Improved customer satisfaction by 10%, reduced support ticket volume by 30%."
+                captain: "Team Captain Name",
+                videoLink: "https://drive.google.com/your-video-link",
+                slidedeckLink: "https://docs.google.com/presentation/your-slides",
+                problemSolution: "We built a personalized learning assistant that adapts to individual learning styles and provides customized educational content using large language models and cognitive science principles.",
+                architectureLink: "https://your-architecture-diagram-link.com",
+                impactMetrics: "60% improvement in learning retention, 40% reduction in study time, potential to impact 10M+ students globally."
             },
-            cloudwerxagents: {
+            {
                 name: "Cloudwerx Agents",
-                videoLink: "YOUR_CLOUDWERXAGENTS_VIDEO_EMBED_URL",
-                slideDeckLink: "YOUR_CLOUDWERXAGENTS_SLIDE_DECK_LINK",
-                problemSolutionFit: "Cloudwerx Agents developed a cloud cost optimization platform that identifies and recommends cost-saving opportunities in AWS and Azure environments.",
-                architectureDiagramLink: "YOUR_CLOUDWERXAGENTS_ARCH_DIAGRAM_LINK",
-                impactMetrics: "Identified potential savings of up to 20% on cloud bills for typical enterprises."
+                captain: "Team Captain Name",
+                videoLink: "https://drive.google.com/your-video-link",
+                slidedeckLink: "https://docs.google.com/presentation/your-slides",
+                problemSolution: "Our solution optimizes cloud infrastructure costs by implementing intelligent resource management that automatically scales and allocates resources based on predictive usage patterns.",
+                architectureLink: "https://your-architecture-diagram-link.com",
+                impactMetrics: "30-50% reduction in cloud costs, 99.9% uptime guarantee, projected savings of $1M+ annually for enterprise clients."
             },
-            risingcyberbrains: {
+            {
                 name: "Rising Cyber Brains (RCB)",
-                videoLink: "YOUR_RCB_VIDEO_EMBED_URL",
-                slideDeckLink: "YOUR_RCB_SLIDE_DECK_LINK",
-                problemSolutionFit: "RCB designed a secure decentralized identity management system using blockchain technology.",
-                architectureDiagramLink: "YOUR_RCB_ARCH_DIAGRAM_LINK",
-                impactMetrics: "Enhanced security for user data, reduced identity fraud risks by 80%."
+                captain: "Team Captain Name",
+                videoLink: "https://drive.google.com/your-video-link",
+                slidedeckLink: "https://docs.google.com/presentation/your-slides",
+                problemSolution: "We developed a comprehensive cybersecurity training platform that uses gamification and AI to create personalized security awareness programs for organizations.",
+                architectureLink: "https://your-architecture-diagram-link.com",
+                impactMetrics: "85% improvement in security awareness scores, 60% reduction in human-error security incidents, ROI of 400% through prevented breaches."
             },
-            binarybrains: {
+            {
                 name: "Binary Brains",
-                videoLink: "YOUR_BINARYBRAINS_VIDEO_EMBED_URL",
-                slideDeckLink: "YOUR_BINARYBRAINS_SLIDE_DECK_LINK",
-                problemSolutionFit: "Binary Brains created an educational platform that teaches coding concepts through interactive challenges and gamification.",
-                architectureDiagramLink: "YOUR_BINARYBRAINS_ARCH_DIAGRAM_LINK",
-                impactMetrics: "Increased user engagement by 35%, improved learning retention by 20%."
+                captain: "Team Captain Name",
+                videoLink: "https://drive.google.com/your-video-link",
+                slidedeckLink: "https://docs.google.com/presentation/your-slides",
+                problemSolution: "Our team created an AI-powered medical diagnosis assistant that helps healthcare professionals make more accurate diagnoses by analyzing patient symptoms, medical history, and diagnostic images.",
+                architectureLink: "https://your-architecture-diagram-link.com",
+                impactMetrics: "92% diagnostic accuracy, 50% reduction in misdiagnosis rates, potential to save thousands of lives and millions in healthcare costs."
             },
-            promptops: {
+            {
                 name: "PromptOps",
-                videoLink: "YOUR_PROMPT_OPS_VIDEO_EMBED_URL",
-                slideDeckLink: "YOUR_PROMPT_OPS_SLIDE_DECK_LINK",
-                problemSolutionFit: "PromptOps developed a tool for optimizing AI prompts, improving the quality and relevance of LLM outputs.",
-                architectureDiagramLink: "YOUR_PROMPT_OPS_ARCH_DIAGRAM_LINK",
-                impactMetrics: "Improved LLM response accuracy by 15%, reduced computational costs by 10%."
+                captain: "Team Captain Name",
+                videoLink: "https://drive.google.com/your-video-link",
+                slidedeckLink: "https://docs.google.com/presentation/your-slides",
+                problemSolution: "We built a DevOps automation platform that uses AI to optimize deployment pipelines, predict system failures, and automatically resolve common infrastructure issues.",
+                architectureLink: "https://your-architecture-diagram-link.com",
+                impactMetrics: "75% reduction in deployment time, 90% decrease in system downtime, estimated $800K annual savings in operational costs."
             },
-            theagentictroup: {
+            {
                 name: "The Agentic Troup",
-                videoLink: "YOUR_AGENTIC_TROUP_VIDEO_EMBED_URL",
-                slideDeckLink: "YOUR_AGENTIC_TROUP_SLIDE_DECK_LINK",
-                problemSolutionFit: "The Agentic Troup built a multi-agent AI system for automating complex workflows in project management.",
-                architectureDiagramLink: "YOUR_AGENTIC_TROUP_ARCH_DIAGRAM_LINK",
-                impactMetrics: "Streamlined project tasks by 25%, reduced project completion time by 10%."
+                captain: "Team Captain Name",
+                videoLink: "https://drive.google.com/your-video-link",
+                slidedeckLink: "https://docs.google.com/presentation/your-slides",
+                problemSolution: "Our solution addresses supply chain inefficiencies by creating an intelligent logistics platform that optimizes routes, predicts demand, and automates inventory management.",
+                architectureLink: "https://your-architecture-diagram-link.com",
+                impactMetrics: "25% reduction in logistics costs, 40% improvement in delivery times, potential annual savings of $5M+ for large retailers."
             }
-        };
+        ];
 
-        // Get the modal and the close button
-        const modal = document.getElementById("teamModal");
-        const closeButton = document.querySelector(".close-button");
+        // Generate team cards
+        function generateTeamCards() {
+            const teamsGrid = document.getElementById('teamsGrid');
+            teamsGrid.innerHTML = '';
 
-        // Get elements within the modal
-        const modalTeamName = document.getElementById("modalTeamName");
-        const modalVideo = document.getElementById("modalVideo");
-        const modalSlideDeck = document.getElementById("modalSlideDeck");
-        const modalProblemSolution = document.getElementById("modalProblemSolution");
-        const modalArchitectureDiagram = document.getElementById("modalArchitectureDiagram");
-        const modalImpactMetrics = document.getElementById("modalImpactMetrics");
+            teams.forEach((team, index) => {
+                const teamCard = document.createElement('div');
+                teamCard.className = 'team-card';
+                teamCard.innerHTML = `
+                    <div class="team-name">${team.name}</div>
+                    <div class="team-captain">Captain: ${team.captain}</div>
+                    <button class="view-details" onclick="openModal(${index})">
+                        View Project Details
+                    </button>
+                `;
+                teamsGrid.appendChild(teamCard);
+            });
+        }
 
-        // Get all team cards
-        const teamCards = document.querySelectorAll(".team-card");
+        // Open modal with team details
+        function openModal(teamIndex) {
+            const team = teams[teamIndex];
+            const modal = document.getElementById('teamModal');
+            
+            document.getElementById('modalTeamName').textContent = team.name;
+            document.getElementById('modalCaptain').textContent = `Team Captain: ${team.captain}`;
+            
+            // Update video placeholder (you can replace this with actual video embedding)
+            document.getElementById('videoPlaceholder').innerHTML = `
+                🎥 ${team.name} Demo Video<br>
+                <small>Click <a href="${team.videoLink}" target="_blank" style="color: white; text-decoration: underline;">here</a> to watch the demo</small>
+            `;
+            
+            // Populate team information
+            const teamInfo = document.getElementById('teamInfo');
+            teamInfo.innerHTML = `
+                <div class="info-section">
+                    <div class="info-title">📊 Slide Deck</div>
+                    <div class="info-content">
+                        <a href="${team.slidedeckLink}" target="_blank" class="info-link">View Presentation Slides</a>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <div class="info-title">💡 Problem-Solution Fit</div>
+                    <div class="info-content">${team.problemSolution}</div>
+                </div>
+                
+                <div class="info-section">
+                    <div class="info-title">🏗️ Architecture Diagram</div>
+                    <div class="info-content">
+                        <a href="${team.architectureLink}" target="_blank" class="info-link">View System Architecture</a>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <div class="info-title">📈 Impact Metrics & ROI Estimate</div>
+                    <div class="info-content">${team.impactMetrics}</div>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
 
-        // When the user clicks on a team card, open the modal
-        teamCards.forEach(card => {
-            card.addEventListener("click", function() {
-                const teamId = this.dataset.team;
-                const team = teamsData[teamId];
+        // Close modal
+        function closeModal() {
+            document.getElementById('teamModal').style.display = 'none';
+        }
 
-                if (team) {
-                    modalTeamName.textContent = team.name;
-                    modalVideo.src = team.videoLink; // Set the video source
-                    modalSlideDeck.href = team.slideDeckLink;
-                    modalProblemSolution.textContent = team.problemSolutionFit;
-                    modalArchitectureDiagram.href = team.architectureDiagramLink;
-                    modalImpactMetrics.textContent = team.impactMetrics;
-
-                    modal.style.display = "block"; // Show the modal
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            generateTeamCards();
+            
+            // Close modal when clicking the X
+            document.querySelector('.close').addEventListener('click', closeModal);
+            
+            // Close modal when clicking outside
+            document.getElementById('teamModal').addEventListener('click', function(event) {
+                if (event.target === this) {
+                    closeModal();
+                }
+            });
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeModal();
                 }
             });
         });
-
-        // When the user clicks on <span> (x), close the modal
-        closeButton.addEventListener("click", function() {
-            modal.style.display = "none";
-            modalVideo.src = ""; // Stop the video when modal closes
-        });
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.addEventListener("click", function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-                modalVideo.src = ""; // Stop the video when modal closes
-            }
-        });
     </script>
-
 </body>
 </html>
