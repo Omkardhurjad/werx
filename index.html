@@ -168,6 +168,13 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
+        .video-embed {
+            width: 100%;
+            height: 400px;
+            border: none;
+            border-radius: 15px;
+        }
+
         .video-placeholder {
             width: 100%;
             height: 300px;
@@ -178,6 +185,7 @@
             color: white;
             font-size: 1.2rem;
             text-align: center;
+            border-radius: 15px;
         }
 
         .team-info {
@@ -214,6 +222,31 @@
             text-decoration: underline;
         }
 
+        .video-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .video-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .video-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 1rem;
@@ -236,6 +269,10 @@
                 width: 95%;
                 margin: 5% auto;
                 padding: 1.5rem;
+            }
+
+            .video-buttons {
+                flex-direction: column;
             }
         }
     </style>
@@ -261,11 +298,8 @@
                 <div class="modal-captain" id="modalCaptain"></div>
             </div>
             
-            <div class="video-container">
-                <div class="video-placeholder" id="videoPlaceholder">
-                    🎥 Demo Video<br>
-                    <small>Video will be embedded here</small>
-                </div>
+            <div class="video-container" id="videoContainer">
+                <!-- Video will be populated by JavaScript -->
             </div>
             
             <div class="team-info" id="teamInfo">
@@ -275,12 +309,32 @@
     </div>
 
     <script>
+        // Helper function to convert Google Drive links to embed format
+        function convertGoogleDriveLink(url) {
+            // Handle different Google Drive URL formats
+            let fileId = '';
+            
+            if (url.includes('/file/d/')) {
+                // Format: https://drive.google.com/file/d/FILE_ID/view
+                fileId = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/)?.[1];
+            } else if (url.includes('id=')) {
+                // Format: https://drive.google.com/open?id=FILE_ID
+                fileId = url.match(/id=([a-zA-Z0-9_-]+)/)?.[1];
+            }
+            
+            if (fileId) {
+                return `https://drive.google.com/file/d/${fileId}/preview`;
+            }
+            
+            return url; // Return original if can't parse
+        }
+
         // Team data structure
         const teams = [
             {
                 name: "AgentX",
                 captain: "Team Captain Name",
-                videoLink: "https://drive.google.com/your-video-link",
+                videoLink: "https://drive.google.com/file/d/1your-video-id/view?usp=sharing",
                 slidedeckLink: "https://docs.google.com/presentation/your-slides",
                 problemSolution: "Our team identified the challenge of automated customer service responses and developed an AI-powered agent that can handle complex queries with 95% accuracy, reducing response time from hours to seconds.",
                 architectureLink: "https://your-architecture-diagram-link.com",
@@ -289,7 +343,7 @@
             {
                 name: "The AIvengers",
                 captain: "Team Captain Name",
-                videoLink: "https://drive.google.com/your-video-link",
+                videoLink: "https://drive.google.com/file/d/1your-video-id/view?usp=sharing",
                 slidedeckLink: "https://docs.google.com/presentation/your-slides",
                 problemSolution: "We tackled the issue of data silos in enterprise environments by creating an intelligent data integration platform that uses ML to automatically map and synchronize data across different systems.",
                 architectureLink: "https://your-architecture-diagram-link.com",
@@ -298,7 +352,7 @@
             {
                 name: "Ctrl+Alt+Elite",
                 captain: "Team Captain Name",
-                videoLink: "https://drive.google.com/your-video-link",
+                videoLink: "https://drive.google.com/file/d/1your-video-id/view?usp=sharing",
                 slidedeckLink: "https://docs.google.com/presentation/your-slides",
                 problemSolution: "Our solution addresses the growing cybersecurity threats by implementing an AI-driven threat detection system that learns from network behavior patterns to identify anomalies in real-time.",
                 architectureLink: "https://your-architecture-diagram-link.com",
@@ -307,7 +361,7 @@
             {
                 name: "InsightHackers",
                 captain: "Team Captain Name",
-                videoLink: "https://drive.google.com/your-video-link",
+                videoLink: "https://drive.google.com/file/d/1your-video-id/view?usp=sharing",
                 slidedeckLink: "https://docs.google.com/presentation/your-slides",
                 problemSolution: "We developed an advanced analytics platform that transforms raw business data into actionable insights using natural language processing and predictive modeling.",
                 architectureLink: "https://your-architecture-diagram-link.com",
@@ -316,7 +370,7 @@
             {
                 name: "AI Wizards",
                 captain: "Team Captain Name",
-                videoLink: "https://drive.google.com/your-video-link",
+                videoLink: "https://drive.google.com/file/d/1your-video-id/view?usp=sharing",
                 slidedeckLink: "https://docs.google.com/presentation/your-slides",
                 problemSolution: "Our team created an intelligent code review system that uses machine learning to automatically detect bugs, security vulnerabilities, and suggest optimizations in real-time.",
                 architectureLink: "https://your-architecture-diagram-link.com",
@@ -325,7 +379,7 @@
             {
                 name: "LLMao Squad",
                 captain: "Team Captain Name",
-                videoLink: "https://drive.google.com/your-video-link",
+                videoLink: "https://drive.google.com/file/d/1your-video-id/view?usp=sharing",
                 slidedeckLink: "https://docs.google.com/presentation/your-slides",
                 problemSolution: "We built a personalized learning assistant that adapts to individual learning styles and provides customized educational content using large language models and cognitive science principles.",
                 architectureLink: "https://your-architecture-diagram-link.com",
@@ -334,7 +388,7 @@
             {
                 name: "Cloudwerx Agents",
                 captain: "Team Captain Name",
-                videoLink: "https://drive.google.com/your-video-link",
+                videoLink: "https://drive.google.com/file/d/1your-video-id/view?usp=sharing",
                 slidedeckLink: "https://docs.google.com/presentation/your-slides",
                 problemSolution: "Our solution optimizes cloud infrastructure costs by implementing intelligent resource management that automatically scales and allocates resources based on predictive usage patterns.",
                 architectureLink: "https://your-architecture-diagram-link.com",
@@ -343,7 +397,7 @@
             {
                 name: "Rising Cyber Brains (RCB)",
                 captain: "Team Captain Name",
-                videoLink: "https://drive.google.com/your-video-link",
+                videoLink: "https://drive.google.com/file/d/1your-video-id/view?usp=sharing",
                 slidedeckLink: "https://docs.google.com/presentation/your-slides",
                 problemSolution: "We developed a comprehensive cybersecurity training platform that uses gamification and AI to create personalized security awareness programs for organizations.",
                 architectureLink: "https://your-architecture-diagram-link.com",
@@ -352,7 +406,7 @@
             {
                 name: "Binary Brains",
                 captain: "Team Captain Name",
-                videoLink: "https://drive.google.com/your-video-link",
+                videoLink: "https://drive.google.com/file/d/1your-video-id/view?usp=sharing",
                 slidedeckLink: "https://docs.google.com/presentation/your-slides",
                 problemSolution: "Our team created an AI-powered medical diagnosis assistant that helps healthcare professionals make more accurate diagnoses by analyzing patient symptoms, medical history, and diagnostic images.",
                 architectureLink: "https://your-architecture-diagram-link.com",
@@ -361,7 +415,7 @@
             {
                 name: "PromptOps",
                 captain: "Team Captain Name",
-                videoLink: "https://drive.google.com/your-video-link",
+                videoLink: "https://drive.google.com/file/d/1your-video-id/view?usp=sharing",
                 slidedeckLink: "https://docs.google.com/presentation/your-slides",
                 problemSolution: "We built a DevOps automation platform that uses AI to optimize deployment pipelines, predict system failures, and automatically resolve common infrastructure issues.",
                 architectureLink: "https://your-architecture-diagram-link.com",
@@ -370,7 +424,7 @@
             {
                 name: "The Agentic Troup",
                 captain: "Team Captain Name",
-                videoLink: "https://drive.google.com/your-video-link",
+                videoLink: "https://drive.google.com/file/d/1your-video-id/view?usp=sharing",
                 slidedeckLink: "https://docs.google.com/presentation/your-slides",
                 problemSolution: "Our solution addresses supply chain inefficiencies by creating an intelligent logistics platform that optimizes routes, predicts demand, and automates inventory management.",
                 architectureLink: "https://your-architecture-diagram-link.com",
@@ -402,22 +456,53 @@
             const team = teams[teamIndex];
             const modal = document.getElementById('teamModal');
             
+            // Set modal header
             document.getElementById('modalTeamName').textContent = team.name;
             document.getElementById('modalCaptain').textContent = `Team Captain: ${team.captain}`;
             
-            // Handle video display - Google Drive often blocks embedding, so we'll show a clean video access section
-            document.getElementById('videoPlaceholder').innerHTML = `
-                <div style="display: flex; align-items: center; justify-content: center; height: 300px; flex-direction: column; color: white; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">🎥</div>
-                    <div style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;">${team.name} Demo Video</div>
-                    <div style="margin-bottom: 1.5rem; opacity: 0.9;">Click below to watch the demo</div>
-                    <a href="${team.videoLink}" target="_blank" style="background: rgba(255,255,255,0.2); color: white; text-decoration: none; padding: 12px 24px; border-radius: 25px; font-weight: 500; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.3);" 
-                       onmouseover="this.style.background='rgba(255,255,255,0.3)'; this.style.transform='translateY(-2px)'"
-                       onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.transform='translateY(0)'">
-                        ▶️ Watch Demo Video
-                    </a>
+            // Handle video display
+            const videoContainer = document.getElementById('videoContainer');
+            const embedUrl = convertGoogleDriveLink(team.videoLink);
+            
+            // Try to embed the video, with fallback options
+            videoContainer.innerHTML = `
+                <div style="position: relative; width: 100%; height: 400px; border-radius: 15px; overflow: hidden; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; text-align: center;">
+                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;">
+                        <iframe src="${embedUrl}" 
+                                style="width: 100%; height: 100%; border: none; border-radius: 15px;"
+                                allow="autoplay; fullscreen"
+                                loading="lazy"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        </iframe>
+                    </div>
+                    <div style="z-index: 2; display: none; flex-direction: column; align-items: center; padding: 2rem;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🎥</div>
+                        <div style="font-size: 1.4rem; font-weight: 600; margin-bottom: 0.5rem;">${team.name} Demo Video</div>
+                        <div style="margin-bottom: 1.5rem; opacity: 0.9;">Video embedding not available</div>
+                        <div class="video-buttons">
+                            <a href="${team.videoLink}" target="_blank" class="video-btn">
+                                ▶️ Watch Video
+                            </a>
+                            <a href="${team.videoLink.replace('/view', '/edit')}" target="_blank" class="video-btn">
+                                📱 Mobile View
+                            </a>
+                        </div>
+                    </div>
                 </div>
             `;
+            
+            // Add fallback for iframe loading issues
+            setTimeout(() => {
+                const iframe = videoContainer.querySelector('iframe');
+                const fallback = videoContainer.querySelector('[style*="z-index: 2"]');
+                
+                if (iframe && !iframe.contentDocument) {
+                    iframe.style.display = 'none';
+                    if (fallback) {
+                        fallback.style.display = 'flex';
+                    }
+                }
+            }, 3000);
             
             // Populate team information
             const teamInfo = document.getElementById('teamInfo');
@@ -447,12 +532,15 @@
                 </div>
             `;
             
+            // Show modal
             modal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
         }
 
         // Close modal
         function closeModal() {
             document.getElementById('teamModal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restore scrolling
         }
 
         // Event listeners
